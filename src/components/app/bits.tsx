@@ -59,7 +59,7 @@ export function StatCard({ label, value, icon: Icon, hint, t = "neutral", valueT
           <Icon className="size-4" />
         </span>
       </div>
-      <div className={cn("num mt-3 text-2xl font-semibold tracking-tight", valueTone && `text-${valueTone}`)}>{value}</div>
+      <div className={cn("num mt-3 text-2xl font-semibold tracking-tight", valueTone && { income: "text-income", expense: "text-expense", forecast: "text-forecast" }[valueTone])}>{value}</div>
       {hint && <div className="mt-1 text-xs text-muted-foreground">{hint}</div>}
     </div>
   );
