@@ -7,7 +7,7 @@ function isValidData(x: unknown): x is AppData {
   if (!x || typeof x !== "object") return false;
   const o = x as Record<string, unknown>;
   const arrays = ["transactions", "payments", "incomes", "receivables", "accounts", "cards", "goals", "scenarios", "dismissedInsights", "readNotifications"];
-  return o.version === STORAGE_VERSION && arrays.every((k) => Array.isArray(o[k])) && !!o.settings && typeof o.settings === "object" && (o.mode === "personal" || o.mode === "business");
+  return o["version"] === STORAGE_VERSION && arrays.every((k) => Array.isArray(o[k])) && !!o["settings"] && typeof o["settings"] === "object" && (o["mode"] === "personal" || o["mode"] === "business");
 }
 
 /** Loads persisted data; falls back to a fresh seed if missing or malformed. */

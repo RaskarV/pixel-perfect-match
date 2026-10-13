@@ -39,7 +39,7 @@ export function createSeed(today: Date = new Date()): AppData {
     t("personal", d(28), "Transfer to savings", 0, "expense", "Other", "acc-bank", "Net Banking");
   }
   // remove zero-amount placeholders
-  for (let i = tx.length - 1; i >= 0; i--) if (tx[i].amount === 0) tx.splice(i, 1);
+  for (let i = tx.length - 1; i >= 0; i--) if (tx[i]?.amount === 0) tx.splice(i, 1);
 
   // ---------- Personal: current month (income ₹60,000, expenses ₹32,000) ----------
   t("personal", cur(1), "Salary — Infosys Ltd", 52000, "income", "Salary", "acc-bank", "NEFT");
