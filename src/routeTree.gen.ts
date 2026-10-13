@@ -11,6 +11,15 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as ForecastRouteImport } from './routes/forecast'
+import { Route as GoalsRouteImport } from './routes/goals'
+import { Route as InsightsRouteImport } from './routes/insights'
+import { Route as PaymentsRouteImport } from './routes/payments'
+import { Route as PurchaseAnalyzerRouteImport } from './routes/purchase-analyzer'
+import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as SimulatorRouteImport } from './routes/simulator'
+import { Route as TransactionsRouteImport } from './routes/transactions'
+import { Route as WhenToBuyRouteImport } from './routes/when-to-buy'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,31 +31,146 @@ const DashboardRoute = DashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ForecastRoute = ForecastRouteImport.update({
+  id: '/forecast',
+  path: '/forecast',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GoalsRoute = GoalsRouteImport.update({
+  id: '/goals',
+  path: '/goals',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InsightsRoute = InsightsRouteImport.update({
+  id: '/insights',
+  path: '/insights',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PaymentsRoute = PaymentsRouteImport.update({
+  id: '/payments',
+  path: '/payments',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PurchaseAnalyzerRoute = PurchaseAnalyzerRouteImport.update({
+  id: '/purchase-analyzer',
+  path: '/purchase-analyzer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SimulatorRoute = SimulatorRouteImport.update({
+  id: '/simulator',
+  path: '/simulator',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TransactionsRoute = TransactionsRouteImport.update({
+  id: '/transactions',
+  path: '/transactions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WhenToBuyRoute = WhenToBuyRouteImport.update({
+  id: '/when-to-buy',
+  path: '/when-to-buy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
+  '/forecast': typeof ForecastRoute
+  '/goals': typeof GoalsRoute
+  '/insights': typeof InsightsRoute
+  '/payments': typeof PaymentsRoute
+  '/purchase-analyzer': typeof PurchaseAnalyzerRoute
+  '/settings': typeof SettingsRoute
+  '/simulator': typeof SimulatorRoute
+  '/transactions': typeof TransactionsRoute
+  '/when-to-buy': typeof WhenToBuyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
+  '/forecast': typeof ForecastRoute
+  '/goals': typeof GoalsRoute
+  '/insights': typeof InsightsRoute
+  '/payments': typeof PaymentsRoute
+  '/purchase-analyzer': typeof PurchaseAnalyzerRoute
+  '/settings': typeof SettingsRoute
+  '/simulator': typeof SimulatorRoute
+  '/transactions': typeof TransactionsRoute
+  '/when-to-buy': typeof WhenToBuyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
+  '/forecast': typeof ForecastRoute
+  '/goals': typeof GoalsRoute
+  '/insights': typeof InsightsRoute
+  '/payments': typeof PaymentsRoute
+  '/purchase-analyzer': typeof PurchaseAnalyzerRoute
+  '/settings': typeof SettingsRoute
+  '/simulator': typeof SimulatorRoute
+  '/transactions': typeof TransactionsRoute
+  '/when-to-buy': typeof WhenToBuyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard'
+  fullPaths:
+    | '/'
+    | '/dashboard'
+    | '/forecast'
+    | '/goals'
+    | '/insights'
+    | '/payments'
+    | '/purchase-analyzer'
+    | '/settings'
+    | '/simulator'
+    | '/transactions'
+    | '/when-to-buy'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard'
-  id: '__root__' | '/' | '/dashboard'
+  to:
+    | '/'
+    | '/dashboard'
+    | '/forecast'
+    | '/goals'
+    | '/insights'
+    | '/payments'
+    | '/purchase-analyzer'
+    | '/settings'
+    | '/simulator'
+    | '/transactions'
+    | '/when-to-buy'
+  id:
+    | '__root__'
+    | '/'
+    | '/dashboard'
+    | '/forecast'
+    | '/goals'
+    | '/insights'
+    | '/payments'
+    | '/purchase-analyzer'
+    | '/settings'
+    | '/simulator'
+    | '/transactions'
+    | '/when-to-buy'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DashboardRoute: typeof DashboardRoute
+  ForecastRoute: typeof ForecastRoute
+  GoalsRoute: typeof GoalsRoute
+  InsightsRoute: typeof InsightsRoute
+  PaymentsRoute: typeof PaymentsRoute
+  PurchaseAnalyzerRoute: typeof PurchaseAnalyzerRoute
+  SettingsRoute: typeof SettingsRoute
+  SimulatorRoute: typeof SimulatorRoute
+  TransactionsRoute: typeof TransactionsRoute
+  WhenToBuyRoute: typeof WhenToBuyRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -65,12 +189,84 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/forecast': {
+      id: '/forecast'
+      path: '/forecast'
+      fullPath: '/forecast'
+      preLoaderRoute: typeof ForecastRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/goals': {
+      id: '/goals'
+      path: '/goals'
+      fullPath: '/goals'
+      preLoaderRoute: typeof GoalsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/insights': {
+      id: '/insights'
+      path: '/insights'
+      fullPath: '/insights'
+      preLoaderRoute: typeof InsightsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/payments': {
+      id: '/payments'
+      path: '/payments'
+      fullPath: '/payments'
+      preLoaderRoute: typeof PaymentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/purchase-analyzer': {
+      id: '/purchase-analyzer'
+      path: '/purchase-analyzer'
+      fullPath: '/purchase-analyzer'
+      preLoaderRoute: typeof PurchaseAnalyzerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/simulator': {
+      id: '/simulator'
+      path: '/simulator'
+      fullPath: '/simulator'
+      preLoaderRoute: typeof SimulatorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/transactions': {
+      id: '/transactions'
+      path: '/transactions'
+      fullPath: '/transactions'
+      preLoaderRoute: typeof TransactionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/when-to-buy': {
+      id: '/when-to-buy'
+      path: '/when-to-buy'
+      fullPath: '/when-to-buy'
+      preLoaderRoute: typeof WhenToBuyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DashboardRoute: DashboardRoute,
+  ForecastRoute: ForecastRoute,
+  GoalsRoute: GoalsRoute,
+  InsightsRoute: InsightsRoute,
+  PaymentsRoute: PaymentsRoute,
+  PurchaseAnalyzerRoute: PurchaseAnalyzerRoute,
+  SettingsRoute: SettingsRoute,
+  SimulatorRoute: SimulatorRoute,
+  TransactionsRoute: TransactionsRoute,
+  WhenToBuyRoute: WhenToBuyRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

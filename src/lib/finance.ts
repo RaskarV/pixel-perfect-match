@@ -267,7 +267,7 @@ export function analyzePurchase(data: AppData, mode: Mode, input: PurchaseInput,
   const { settings } = data;
   const reserve = input.reserveOverride ?? settings.finance[mode].reserve;
   const pe = purchaseEvents(input, data);
-  const base = forecast(data, mode, today, horizon, { extraEvents: input.extraEvents });
+  const base = forecast(data, mode, today, horizon, { extraEvents: input.extraEvents ?? [] });
   const withP = forecast(data, mode, today, horizon, { extraEvents: [...(input.extraEvents ?? []), ...pe.events] });
   const dayBefore = iso(subDays(pd, 1));
   const after30 = iso(addDays(pd, 30));
@@ -339,10 +339,11 @@ export function evaluateDates(data: AppData, mode: Mode, input: TimingInput, tod
   });
   const ok = candidates.filter((c) => c.risk !== "high");
   let recommended: Candidate | null = null;
-  if (ok.length) {
+  const first = ok[0];
+  if (first) {
     const lows = ok.filter((c) => c.risk === "low");
     const pool = lows.length ? lows : ok;
-    recommended = input.priority === "high" ? pool[0] : pool.reduce((best, c) => (c.headroom > best.headroom + 1 ? c : best), pool[0]);
+    recommended = input.priority === "high" ? first : pool.reduce((best, c) => (c.headroom > best.headroom + 1 ? c : best), pool[0] ?? first);
   }
   return { candidates, recommended };
 }
@@ -356,7 +357,7 @@ export function simulate(data: AppData, mode: Mode, s: SimInputs, today: Date, d
   if (s.incomeAmount > 0) extra.push({ date: s.incomeDate, label: "Additional income", amount: s.incomeAmount, kind: "income" });
   if (s.extraExpense > 0) extra.push({ date: s.extraExpenseDate, label: "Additional expense", amount: s.extraExpense, kind: "expense" });
   const delays = mode === "business" && s.delayedReceivableId && s.delayDays > 0 ? { [s.delayedReceivableId]: s.delayDays } : undefined;
-  const modified = forecast(data, mode, today, days, { extraEvents: extra, receivableDelays: delays });
+  const modified = forecast(data, mode, today, days, { extraEvents: extra, ...(delays ? { receivableDelays: delays } : {}) });
   const breaches = (f: Forecast, r: number) => f.points.filter((p) => p.balance < r).length;
   const summary = (f: Forecast, r: number) => ({ end: f.end, min: f.min, minDate: f.minDate, income: f.totalIncome, expense: f.totalExpense, breaches: breaches(f, r), risk: classifyRisk(f.min, r, data.settings.headroomPct) });
   return {
@@ -399,13 +400,13 @@ export function insights(data: AppData, mode: Mode, today: Date): Insight[] {
   }
   // 2. payment concentration
   const ups = byMode(data.payments, mode).filter((p) => !p.paid && p.dueDate >= ti && p.dueDate <= iso(addDays(today, 30))).sort((a, b) => a.dueDate.localeCompare(b.dueDate));
-  for (let i = 0; i < ups.length; i++) {
-    const wEnd = iso(addDays(d(ups[i].dueDate), 6));
-    const inWeek = ups.filter((p) => p.dueDate >= ups[i].dueDate && p.dueDate <= wEnd);
+  for (const up of ups) {
+    const wEnd = iso(addDays(d(up.dueDate), 6));
+    const inWeek = ups.filter((p) => p.dueDate >= up.dueDate && p.dueDate <= wEnd);
     const big = inWeek.filter((p) => p.amount >= (mode === "business" ? 10000 : 1000));
     if (big.length >= 3) {
       const sum = big.reduce((s, p) => s + p.amount, 0);
-      out.push({ id: `conc-${mode}-${ups[i].dueDate}`, type: "payments", severity: "medium", title: `${big.length} obligations fall within the same week`, explanation: `${big.map((p) => p.name).join(", ")} are due between ${format(d(ups[i].dueDate), "dd MMM")} and ${format(d(wEnd), "dd MMM")}.`, metric: fmt(sum), action: "Review upcoming payments", link: "/payments" });
+      out.push({ id: `conc-${mode}-${up.dueDate}`, type: "payments", severity: "medium", title: `${big.length} obligations fall within the same week`, explanation: `${big.map((p) => p.name).join(", ")} are due between ${format(d(up.dueDate), "dd MMM")} and ${format(d(wEnd), "dd MMM")}.`, metric: fmt(sum), action: "Review upcoming payments", link: "/payments" });
       break;
     }
   }
@@ -431,8 +432,9 @@ export function insights(data: AppData, mode: Mode, today: Date): Insight[] {
   }
   // 7. savings-rate trend
   const m = lastMonths(txns, today, 3);
-  const [prev, last] = [m[0], m[1]];
-  if (prev.income > 0 && last.income > 0) {
+  const prev = m[0];
+  const last = m[1];
+  if (prev && last && prev.income > 0 && last.income > 0) {
     const delta = last.savingsRate - prev.savingsRate;
     out.push({ id: `sav-${mode}-${last.label}`, type: "savings", severity: delta < -5 ? "medium" : "low", title: delta >= 0 ? `Savings rate improved in ${last.label}` : `Savings rate dropped in ${last.label}`, explanation: `${last.label}: ${last.savingsRate.toFixed(0)}% vs ${prev.label}: ${prev.savingsRate.toFixed(0)}% of income saved.`, metric: `${delta >= 0 ? "+" : ""}${delta.toFixed(0)} pts`, action: "Review financial goals", link: "/goals" });
   }

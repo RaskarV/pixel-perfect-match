@@ -56,7 +56,8 @@ function Dashboard() {
     const hist = historicalBalance(data, mode, today, range);
     const fc = forecast(data, mode, today, range);
     const rows = hist.map((h) => ({ date: h.date, actual: h.balance as number | null, projected: null as number | null }));
-    rows[rows.length - 1].projected = rows[rows.length - 1].actual;
+    const lastRow = rows[rows.length - 1];
+    if (lastRow) lastRow.projected = lastRow.actual;
     for (const p of fc.points.slice(1)) rows.push({ date: p.date, actual: null, projected: p.balance });
     return rows;
   }, [data, mode, today, range]);
