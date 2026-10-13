@@ -126,7 +126,7 @@ function PurchaseAnalyzer() {
   );
 }
 
-function MiniStat({ k, v, sub }: { k: string; v: string; sub?: string }) {
+function MiniStat({ k, v, sub }: { k: string; v: string; sub?: string | undefined }) {
   return (
     <div className="rounded-lg border border-ai/20 bg-background/40 p-3">
       <div className="text-xs text-muted-foreground">{k}</div>
